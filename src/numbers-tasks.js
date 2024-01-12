@@ -52,7 +52,10 @@ function getCircleCircumference(radius) {
  *  -3, 3  => 0
  */
 function getAverage(value1, value2) {
-  return (value1 + value2) / 2;
+  if (!Number.isFinite(value1) || !Number.isFinite(value2)) {
+    return Infinity;
+  }
+  return value1 / 2 + value2 / 2;
 }
 
 /**
@@ -321,7 +324,7 @@ function getSumToN(n) {
 function getSumOfDigits(num) {
   const numStr = num.toString();
   let sum = 0;
-  for (let i = 0; i < numStr.length; i = +1) {
+  for (let i = 0; i < numStr.length; i += 1) {
     sum += parseInt(numStr[i], 10);
   }
   return sum;
@@ -339,7 +342,13 @@ function getSumOfDigits(num) {
  *   15  => false
  */
 function isPowerOfTwo(num) {
-  return num > 0 && (num && num - 1) === 0;
+  if (num === 0) {
+    return false;
+  }
+  return (
+    parseInt(Math.ceil(Math.log(num) / Math.log(2)), 10) ===
+    parseInt(Math.floor(Math.log(num) / Math.log(2)), 10)
+  );
 }
 
 /**
@@ -446,7 +455,9 @@ function getNumberValue(number) {
  * '5'      => false
  */
 function isNumber(value) {
-  return typeof value === 'number' && !Number.isNaN(value);
+  return (
+    typeof value === 'number' && !Number.isNaN(value) && Number.isFinite(value)
+  );
 }
 
 /**
@@ -477,13 +488,7 @@ function isInteger(number) {
  */
 
 function getFloatOnString(str) {
-  const parsedFloat = parseFloat(str);
-
-  if (Number.isNaN(parsedFloat)) {
-    return NaN;
-  }
-
-  return parsedFloat;
+  return Number.parseFloat(str);
 }
 
 /**
@@ -502,7 +507,7 @@ function getFloatOnString(str) {
  */
 
 function getIntegerOnString(str, base) {
-  return parseInt(str, base);
+  return Number.parseInt(str, base);
 }
 
 /**
@@ -592,7 +597,7 @@ function getIntegerPartNumber(number) {
  * 0.1, 0.2, 0.3 => 0.6
  */
 function getSumOfNumbers(x1, x2, x3) {
-  return x1 + x2 + x3;
+  return (x1 * 10 + x2 * 10 + x3 * 10) / 10;
 }
 
 /**
@@ -639,7 +644,7 @@ function getRandomInteger(min, max) {
  * 3, 4 => 5
  */
 function getHypotenuse(a, b) {
-  return Math.sqrt(a * a + b * b);
+  return Math.hypot(a, b);
 }
 
 /**
@@ -656,7 +661,9 @@ function getHypotenuse(a, b) {
  * 15 => 8
  */
 function getCountOfOddNumbers(number) {
-  return Math.ceil((number + 1) / 2);
+  return number > 0
+    ? Math.abs(Math.ceil(number / 2))
+    : Math.abs(Math.floor(number / 2));
 }
 
 module.exports = {
